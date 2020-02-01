@@ -1,29 +1,12 @@
-# across-vue-chrome-extension-boilerplate
+# across-tabs-vue-chrome-extension-boilerplate
 
-## Project setup
-```
-yarn install
-```
+##It works on my machine ¯\\\_(ツ)_/¯
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+A small quick and dirty boilerplate for a chrome extension using vue and
+ across-tabs. It is also running as normal web app.
+ 
+The current version of the chrome extension demonstrates a bug in across-tabs
+ which fires multiple post messages instead of a single one.
+ 
+If you have any issues using my template feel free to make pull requests or
+ contact me directly.  
