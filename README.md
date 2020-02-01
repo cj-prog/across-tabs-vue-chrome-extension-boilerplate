@@ -1,4 +1,4 @@
-# across-vue
+# across-vue-chrome-extension-boilerplate
 
 ## Project setup
 ```

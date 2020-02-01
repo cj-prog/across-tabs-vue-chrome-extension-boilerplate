@@ -1,15 +1,23 @@
 {
-  "name": "across-vue",
+  "name": "across-vue-chrome-extension-boilerplate",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "chrome:build": "cross-env NODE_ENV=production webpack --hide-modules --progress",
+    "chrome:build:watch": "npm run chrome:build -- --watch",
+    "chrome:build:dev": "set NODE_ENV=development && webpack --silent --mode=development --env.NODE_ENV=development --hide-modules --progress",
+    "chrome:build:dev:watch": "cross-env NODE_ENV=development HMR=true npm run chrome:build:dev --watch",
+    "chrome:build:dev:watch:hot": "cross-env NODE_ENV=development HMR=true npm run chrome:build:dev --hot --watch"
   },
   "dependencies": {
+    "across-tabs": "^1.3.1",
     "core-js": "^3.4.4",
-    "vue": "^2.6.10"
+    "cross-env": "^7.0.0",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
@@ -18,7 +26,11 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.5",
+    "webpack-chrome-extension-reloader": "^1.3.0",
+    "webpack-cli": "^3.3.10",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "eslintConfig": {
     "root": true,
