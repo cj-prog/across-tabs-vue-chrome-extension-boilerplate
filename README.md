@@ -1,6 +1,6 @@
 # across-tabs-vue-chrome-extension-boilerplate
 
-##It works on my machine ¯\\\_(ツ)_/¯
+## It works on my machine ¯\\\_(ツ)_/¯
 
 A small quick and dirty boilerplate for a chrome extension using vue and
  across-tabs. It is also running as normal web app.
