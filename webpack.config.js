@@ -9,12 +9,11 @@ const {
 } = require('./package.json');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WebpackShellPlugin = require('webpack-shell-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
+const ExtensionReloader = require('webpack-extension-reloader');
 const { VueLoaderPlugin } = require('vue-loader');
 const P = require('./global_constants').P;
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ejs = require('ejs');
 
 const env = {
   mode: process.env.NODE_ENV,
@@ -85,12 +84,6 @@ const env = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      hash: false,
-      title: 'across-vue chrome extension',
-      template: 'index.html',
-      filename: 'index.html',
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(
         process.env.NODE_ENV || 'development'
@@ -101,8 +94,8 @@ const env = {
       filename: '[name].css',
     }),
     new CopyWebpackPlugin([
+      { from: 'index.html', to: 'index.html', transform: transformHtml },
       { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
-      { from: 'child.html', to: 'child.html' },
       {
         from: 'manifest.json',
         to: 'manifest.json',
@@ -111,15 +104,19 @@ const env = {
         },
       },
     ]),
-    new WebpackShellPlugin({
-      onBuildEnd: ['node scripts/remove-evals.js'],
-    }),
   ],
-  devtool: 'cheap-module-source-map',
 };
 
 if (process.env.HMR === 'true') {
-  env.plugins = (env.plugins || []).concat([new ChromeExtensionReloader()]);
+  env.plugins = (env.plugins || []).concat([new ExtensionReloader({
+    manifest: __dirname + '/src/manifest.json',
+  })]);
+}
+
+function transformHtml(content) {
+  return ejs.render(content.toString(), {
+    ...process.env,
+  });
 }
 
 function transformManifest(buffer) {
@@ -131,7 +128,11 @@ function transformManifest(buffer) {
   manifest.author = author;
   // eslint-disable-next-line camelcase
   manifest.homepage_url = homepage_url;
+  if (env.mode === 'development') {
+    manifest['content_security_policy'] = "script-src 'self' 'unsafe-eval'; object-src 'self'";
+  }
+
   return JSON.stringify(manifest, null, 2);
 }
 
-module.exports = config => env;
+module.exports = env;
